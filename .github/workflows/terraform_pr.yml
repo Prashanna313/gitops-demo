@@ -1,0 +1,64 @@
+name: Terraform PR Workflow
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test_and_validate:
+    name: Test and Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.9.1
+
+      - name: Validate Terraform Configuration
+        run: terraform init && terraform validate
+
+      - name: Install tfsec
+        run: |
+          wget -qO- https://github.com/tfsec/tfsec/releases/latest/download/tfsec-linux-amd64.tar.gz | tar xvz
+          sudo mv tfsec /usr/local/bin
+
+      - name: Run tfsec
+        run: tfsec .
+
+      - name: Install tflint
+        run: |
+          wget -qO- https://github.com/terraform-linters/tflint/releases/download/v0.31.0/tflint_linux_amd64.zip | funzip - > tflint
+          chmod +x tflint
+          sudo mv tflint /usr/local/bin
+
+      - name: Run tflint
+        run: tflint .
+
+  plan:
+    name: Plan
+    runs-on: ubuntu-latest
+    needs: test_and_validate
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.9.1
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Plan Terraform Deployment
+        run: terraform plan -out=tfplan -input=false
+
+      - name: Save Plan as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: tfplan
+          path: tfplan
