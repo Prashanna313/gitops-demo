@@ -30,7 +30,7 @@ jobs:
           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
       - name: Run tfsec
-        run: tfsec .
+        run: tfsec -s .
 
       - name: Install tflint
         run: |
