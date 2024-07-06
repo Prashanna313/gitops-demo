@@ -30,9 +30,7 @@ jobs:
 
       - name: Install tflint
         run: |
-          wget -qO- https://github.com/terraform-linters/tflint/releases/download/v0.31.0/tflint_linux_amd64.zip | funzip - > tflint
-          chmod +x tflint
-          sudo mv tflint /usr/local/bin
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
       - name: Run tflint
         run: tflint .
