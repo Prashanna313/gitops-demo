@@ -112,6 +112,11 @@ resource "aws_elb" "web" {
   }
 }
 
+resource "aws_key_pair" "web_key_pair" {
+  key_name   = "web-key-pair"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeGstPfd+Z4rWJgGahiWMw3FdhxFprn1dGUmf2eaz6hUpoqqTYGPpQ1fgwtAouo317Qvo4sIEAzhp6UbCR90fwQHfKg/e5adLxp5MXHrjgHsunhnlqT3/XTQFQoRx6yTScXn7re4H97U52LA79KSd9d7DJ6LpMhXH/cCwcNKbAO1X90rwyXcc66CXCFGuHJnhSNenyw/lgUWFpovleriuhvS8BKcAyuSn7QYXgymmXoDmKXvG2cGuYmqkrIVMDx6A5j+vHMdDkpRlbMQVzJeh4kIl+3qRJoDaae7+02J7/JVMeKauL9OE9RKr7nYRf5DsNg+f3eUqCgSFEcPg63wxN rsa-key-20240706"
+}
+
 
 resource "aws_instance" "web" {
   # The connection block tells our provisioner how to
@@ -132,7 +137,7 @@ resource "aws_instance" "web" {
   ami = var.aws_amis[var.aws_region]
 
   # The name of our SSH keypair we created above.
-  key_name = "AwsDevOps"
+  key_name = aws_key_pair.web_key_pair.key_name
 
   # Our Security group to allow HTTP and SSH access
   vpc_security_group_ids = [aws_security_group.default.id]
@@ -173,7 +178,7 @@ resource "aws_instance" "web2" {
   ami = var.aws_amis[var.aws_region]
 
   # The name of our SSH keypair we created above.
-  key_name = "AwsDevOps"
+  key_name = aws_key_pair.web_key_pair.key_name
 
   # Our Security group to allow HTTP and SSH access
   vpc_security_group_ids = [aws_security_group.default.id]
