@@ -23,8 +23,7 @@ jobs:
 
       - name: Install tfsec
         run: |
-          wget -qO- https://github.com/tfsec/tfsec/releases/latest/download/tfsec-linux-amd64.tar.gz | tar xvz
-          sudo mv tfsec /usr/local/bin
+          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
       - name: Run tfsec
         run: tfsec .
