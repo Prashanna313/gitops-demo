@@ -6,11 +6,11 @@ terraform {
     }
   }
   required_version = ">= 1.9"
-  #   backend "s3" {
-  #     bucket = "gitops-demo-prashanna"
-  #     key = "terraform.tfstate"
-  #     region = "ap-south-1"
-  #   }
+  backend "s3" {
+    bucket = "gitops-demo-prashanna"
+    key    = "terraform.tfstate"
+    region = "ap-south-1"
+  }
 }
 
 provider "aws" {

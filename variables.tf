@@ -1,47 +1,20 @@
 variable "aws_region" {
   description = "AWS region to launch servers."
+  type        = string
   default     = "ap-south-1"
 }
 
 variable "aws_availability_zone" {
   description = "AWS Availability Zoe to launch servers."
+  type        = string
   default     = "ap-south-1a"
 }
-variable "artifacts_bucket_name" {
-  description = "AWS bucket for artifacts."
-  default     = "prashanna-gitops-artifacts"
-}
 
-
-
-variable "env" {
-  description = "environment for terraform project."
-  default     = "development"
-}
-variable "tf_version" {
-  description = "terraform version"
-  default     = "0.14.7"
-}
-
-variable "infra_project_repository_branch" {
-  description = "repo target branch"
-  default     = "master"
-}
-
-variable "infra_project_repository_name" {
-  description = "target repo"
-  default     = "gitops_terraform"
-}
-
-
-
-
-# Ubuntu Precise 12.04 LTS (x64)
+# Ubuntu Server 22.04 LTS (x64)
 variable "aws_amis" {
   default = {
-    eu-west-1 = "ami-674cbc1e"
-    us-east-1 = "ami-1d4e7a66"
-    us-west-1 = "ami-969ab1f6"
-    us-west-2 = "ami-8803e0f0"
+    ap-south-1     = "ami-0c2af51e265bd5e0e"
+    ap-southeast-2 = "ami-0375ab65ee943a2a6"
   }
+  type = map(string)
 }
